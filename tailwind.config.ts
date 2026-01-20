@@ -35,6 +35,15 @@ const config: Config = {
           relationship: "var(--accent-relationship)",
         },
       },
+      animation: {
+        verticalMarquee: "verticalMarquee 26s linear infinite",
+      },
+      keyframes: {
+        verticalMarquee: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-50%)" },
+        },
+      },
     },
   },
   plugins: [],

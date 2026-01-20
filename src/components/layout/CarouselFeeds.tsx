@@ -163,7 +163,7 @@ export default function CarouselFields() {
 
             <div className="h-[420px]">
               <div
-                className="marquee"
+                className="animate-verticalMarquee will-change-transform"
                 style={{ animationPlayState: paused ? "paused" : "running" }}
               >
                 {items.map((item, idx) => (
@@ -209,21 +209,6 @@ export default function CarouselFields() {
           </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes verticalMarquee {
-          0% {
-            transform: translateY(0);
-          }
-          100% {
-            transform: translateY(-50%);
-          }
-        }
-        .marquee {
-          animation: verticalMarquee 26s linear infinite; /* slower */
-          will-change: transform;
-        }
-      `}</style>
     </section>
   );
 }
