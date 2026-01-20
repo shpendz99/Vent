@@ -70,35 +70,14 @@ export const Navbar = () => {
 
             <button
               onClick={() => openAuth("signin")}
-              className="cursor-pointer inline-flex items-center justify-center
-                px-3 py-2
-                text-[11px] font-semibold uppercase tracking-wider
-                bg-transparent
-                text-text-secondary
-                border border-transparent
-               hover:text-text-primary
-                hover:border-borderc-accent
-                hover:bg-borderc-accent/10
-                hover:-translate-y-0.5 hover:brightness-110
-                transition-all duration-200 ease-out
-                rounded-md"
+              className="cursor-pointer inline-flex items-center justify-center px-3 py-2 text-[11px] font-semibold uppercase tracking-wider bg-transparent text-text-secondary border border-transparent hover:text-text-primary hover:border-borderc-accent hover:bg-borderc-accent/10 hover:-translate-y-0.5 hover:brightness-110 transition-all duration-200 ease-out rounded-md"
             >
               Log In
             </button>
 
             <button
               onClick={() => openAuth("signup")}
-              className="cursor-pointer inline-flex items-center justify-center px-4 py-2 text-[11px] font-semibold uppercase tracking-wider
-                text-white
-                border border-border-muted/90
-              bg-accent-primary/30
-                rounded-md
-
-                hover:bg-accent-primary
-                hover:shadow-[0_0_18px_rgba(56,189,248,0.35)]
-                hover:-translate-y-0.5 hover:brightness-110
-
-                transition-all duration-200 ease-out"
+              className="cursor-pointer inline-flex items-center justify-center px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-white border border-border-muted/90 bg-accent-primary/30 rounded-md hover:bg-accent-primary hover:shadow-[0_0_18px_rgba(56,189,248,0.35)] hover:-translate-y-0.5 hover:brightness-110 transition-all duration-200 ease-out"
             >
               Sign Up
             </button>
@@ -126,12 +105,7 @@ export const Navbar = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="
-              fixed z-40
-              left-1/2 top-24
-              w-[min(90%,1300px)]
-              -translate-x-1/2
-            "
+            className="fixed z-40 left-1/2 top-24 w-[min(90%,1300px)] -translate-x-1/2"
           >
             <div className="rounded-3xl border border-border-muted/90 bg-[#111016]/96 px-5 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)] lg:hidden">
               {/* Search */}

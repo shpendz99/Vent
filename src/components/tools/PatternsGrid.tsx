@@ -61,7 +61,10 @@ type TooltipState = {
 
 export default function PatternsGrid() {
   const wrapRef = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(wrapRef, { margin: "-20% 0px -20% 0px", once: true });
+  const inView = useInView(wrapRef, {
+    margin: "-20% 0px -20% 0px",
+    once: true,
+  });
 
   const [hovered, setHovered] = useState<PatternKey | null>(null);
   const [tip, setTip] = useState<TooltipState | null>(null);
@@ -124,7 +127,6 @@ export default function PatternsGrid() {
         scheduleHideTooltip();
       }}
     >
-
       {/* Bars */}
       <div className="space-y-2.5">
         {patterns.map((p) => {
@@ -213,14 +215,7 @@ export default function PatternsGrid() {
                   pointerEvents: "none",
                   maxWidth: 260,
                 }}
-                className="
-                  rounded-xl border border-slate-700/60
-                  bg-[rgba(3,7,18,0.92)]
-                  shadow-[0_25px_60px_rgba(0,0,0,0.55)]
-                  backdrop-blur-md
-                  px-3 py-2
-                  text-slate-100
-                "
+                className="rounded-xl border border-slate-700/60 bg-[rgba(3,7,18,0.92)] shadow-[0_25px_60px_rgba(0,0,0,0.55)] backdrop-blur-md px-3 py-2 text-slate-100"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="text-[11px] uppercase tracking-[0.22em] text-slate-300">
@@ -241,7 +236,7 @@ export default function PatternsGrid() {
               </motion.div>
             ) : null}
           </AnimatePresence>,
-          document.body
+          document.body,
         )}
     </div>
   );

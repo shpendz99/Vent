@@ -35,17 +35,7 @@ const BentoCard: React.FC<BentoCardProps> = ({
         ease: [0.22, 0.55, 0.25, 0.95],
         delay,
       }}
-      className={`
-        relative
-        flex flex-col
-        overflow-hidden
-        rounded-md
-        border border-white/10
-        bg-slate-900/70
-        p-5 sm:p-6 lg:p-8
-        shadow-[0_18px_45px_rgba(15,23,42,0.65)]
-        ${className}
-      `}
+      className={`relative flex flex-col overflow-hidden rounded-md border border-white/10 bg-slate-900/70 p-5 sm:p-6 lg:p-8 shadow-[0_18px_45px_rgba(15,23,42,0.65)] ${className}`}
     >
       {/* EYEBROW */}
       {eyebrow && (
@@ -88,16 +78,7 @@ const BentoSection: React.FC = () => {
         </div>
 
         {/* GRID */}
-        <div
-          className="
-            grid grid-cols-1
-            md:grid-cols-2
-            lg:grid-cols-4
-            gap-4 sm:gap-5 lg:gap-6
-            md:auto-rows-[240px]
-            lg:auto-rows-[260px]
-          "
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 md:auto-rows-[240px] lg:auto-rows-[260px]">
           {/* ROOMS */}
           <BentoCard
             eyebrow="Rooms"

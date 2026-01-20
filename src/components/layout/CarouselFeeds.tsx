@@ -96,13 +96,7 @@ const FEED: FeedItem[] = [
 
 function FeedCard({ item }: { item: FeedItem }) {
   return (
-    <div
-      className="
-        rounded-xl border border-slate-800/70 bg-slate-950/35
-        px-4 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.35)]
-        transition-transform duration-200 hover:translate-x-[2px]
-      "
-    >
+    <div className="rounded-xl border border-slate-800/70 bg-slate-950/35 px-4 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 hover:translate-x-[2px]">
       <div className="flex items-center justify-between text-xs text-slate-400">
         <div className="flex items-center gap-2">
           <span className="text-slate-300">{item.title}</span>
@@ -137,7 +131,7 @@ export default function CarouselFields() {
       "Some days you just need to put it down. No debate. No performance. Just a quiet place to unload the loop and keep moving.",
       "Read what others share, then write when you’re ready. A small entry can be enough to change how heavy a day feels.",
     ],
-    []
+    [],
   );
 
   const [pIndex, setPIndex] = useState(0);
@@ -160,10 +154,7 @@ export default function CarouselFields() {
         <div className="mx-auto max-w-6xl px-4">
           {/* FEED FIRST */}
           <div
-            className="
-      relative overflow-hidden rounded-2xl
-      border border-slate-800/60 bg-slate-950/15 p-4
-    "
+            className="relative overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-950/15 p-4"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >

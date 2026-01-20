@@ -29,10 +29,11 @@ export default function PrivateCard() {
         id: "e2",
         title: "Late-night thoughts",
         when: "Yesterday",
-        preview: "Grateful, anxious, and tired—still trying to be kind to myself.",
+        preview:
+          "Grateful, anxious, and tired—still trying to be kind to myself.",
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -41,7 +42,6 @@ export default function PrivateCard() {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-
       {/* Content wrapper */}
       <div className="mt-3">
         <motion.ul
@@ -83,7 +83,7 @@ function PrivateRow({
     <motion.li
       className={cn(
         "group relative overflow-hidden rounded-md",
-        "border border-slate-800/70 bg-slate-900/40"
+        "border border-slate-800/70 bg-slate-900/40",
       )}
       initial={false}
       animate={parentHover ? "cardHover" : "cardRest"}
@@ -165,15 +165,7 @@ function PrivateRow({
           initial={{ opacity: 0, y: 2 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div
-            className="
-              rounded-md border border-slate-700/60
-              bg-slate-950/40 px-2 py-1
-              text-[10px] uppercase tracking-[0.18em]
-              text-slate-200/80
-              backdrop-blur
-            "
-          >
+          <div className="rounded-md border border-slate-700/60 bg-slate-950/40 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-slate-200/80 backdrop-blur">
             Open
           </div>
         </motion.div>
