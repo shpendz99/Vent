@@ -94,14 +94,7 @@ export default function MembershipPlan() {
 
           <button
             onClick={handleNotify}
-            className="w-full cursor-pointer relative inline-flex items-center justify-center
-                       px-8 py-3 text-[11px] font-semibold uppercase tracking-wider
-                       text-white border border-borderc-accent
-                       bg-[radial-gradient(circle_at_top,var(--accent-primary),#0284C7)]
-                       shadow-[0_0_0_0_rgba(56,189,248,0)]
-                       hover:shadow-[0_0_30px_2px_rgba(56,189,248,0.35)]
-                       hover:brightness-110
-                       transition-all duration-200 ease-out rounded-md"
+            className="w-full cursor-pointer relative inline-flex items-center justify-center px-8 py-3 text-[11px] font-semibold uppercase tracking-wider text-white border border-borderc-accent bg-[radial-gradient(circle_at_top,var(--accent-primary),#0284C7)] shadow-[0_0_0_0_rgba(56,189,248,0)] hover:shadow-[0_0_30px_2px_rgba(56,189,248,0.35)] hover:brightness-110 transition-all duration-200 ease-out rounded-md"
           >
             Notify Me
           </button>
