@@ -25,7 +25,7 @@ export default function AccountSection() {
   // Validation State
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(
-    null
+    null,
   );
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -41,7 +41,7 @@ export default function AccountSection() {
       if (user) {
         setEmail(user.email || "");
         setUsername(
-          user.user_metadata?.username || user.email?.split("@")[0] || "User"
+          user.user_metadata?.username || user.email?.split("@")[0] || "User",
         );
 
         // Fetch profile for avatar
@@ -309,7 +309,7 @@ export default function AccountSection() {
               value={username}
               onChange={(e) =>
                 setUsername(
-                  e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "")
+                  e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""),
                 )
               }
               className={`w-full bg-white/5 border rounded-xl px-4 py-3 text-sm transition-all focus:outline-none 
@@ -317,10 +317,10 @@ export default function AccountSection() {
                   !editing
                     ? "text-white/40 border-white/5 cursor-not-allowed"
                     : usernameError
-                    ? "text-white border-red-500/40 focus:border-red-500/60"
-                    : usernameAvailable
-                    ? "text-white border-emerald-500/40 focus:border-emerald-500/60"
-                    : "text-white border-white/5 focus:border-white/10"
+                      ? "text-white border-red-500/40 focus:border-red-500/60"
+                      : usernameAvailable
+                        ? "text-white border-emerald-500/40 focus:border-emerald-500/60"
+                        : "text-white border-white/5 focus:border-white/10"
                 }`}
             />
           </div>
@@ -381,8 +381,8 @@ export default function AccountSection() {
                 !editing
                   ? "text-white/20 cursor-not-allowed"
                   : passwordError
-                  ? "text-white border-red-500/40 focus:border-red-500/60"
-                  : "text-white focus:border-white/10"
+                    ? "text-white border-red-500/40 focus:border-red-500/60"
+                    : "text-white focus:border-white/10"
               }`}
           />
         </div>
@@ -411,18 +411,7 @@ export default function AccountSection() {
                 // Could also reset username if we tracked initial value separately
               }}
               // Navbar 'Log In' Style: Transparent bg, border text-secondary, hover effects
-              className="cursor-pointer inline-flex items-center justify-center
-                px-5 py-2.5
-                text-[11px] font-semibold uppercase tracking-wider
-                bg-transparent
-                text-white/60
-                border border-transparent
-                hover:text-white
-                hover:border-white/20
-                hover:bg-white/5
-                hover:-translate-y-0.5
-                transition-all duration-200 ease-out
-                rounded-xl"
+              className="cursor-pointer inline-flex items-center justify-center px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider bg-transparent text-white/60 border border-transparent hover:text-white hover:border-white/20 hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-200 ease-out rounded-xl"
             >
               Cancel
             </button>

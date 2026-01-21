@@ -83,7 +83,8 @@ function randomPick<T>(arr: T[]) {
 function buildRandomCalendar(total = 28): (DayEntry | null)[] {
   const highlightedCount = Math.floor(Math.random() * 4) + 5; // 5–8
   const indices = new Set<number>();
-  while (indices.size < highlightedCount) indices.add(Math.floor(Math.random() * total));
+  while (indices.size < highlightedCount)
+    indices.add(Math.floor(Math.random() * total));
 
   // simple fake dates that look believable
   const startDay = Math.floor(Math.random() * 10) + 10; // 10–19
@@ -149,8 +150,7 @@ function CalendarTooltip({
           scale: { duration: 0.25, ease: "easeOut" },
         }}
         style={{ top: y + 14, left: x + 14 }}
-        className="fixed z-[9999] w-[210px] rounded-xl border border-slate-700/60 
-                   bg-[rgba(3,7,18,0.92)] p-3 shadow-2xl backdrop-blur"
+        className="fixed z-[9999] w-[210px] rounded-xl border border-slate-700/60 bg-[rgba(3,7,18,0.92)] p-3 shadow-2xl backdrop-blur"
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -162,7 +162,9 @@ function CalendarTooltip({
               {entry.body}
             </p>
           </div>
-          <span className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${meta.dot}`} />
+          <span
+            className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${meta.dot}`}
+          />
         </div>
 
         <p className="mt-2 text-[10px] tracking-[0.22em] text-slate-400">
@@ -178,9 +180,11 @@ function CalendarTooltip({
  */
 export default function CalendarBentoContent() {
   const [days, setDays] = useState<(DayEntry | null)[]>([]);
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; entry: DayEntry } | null>(
-    null
-  );
+  const [tooltip, setTooltip] = useState<{
+    x: number;
+    y: number;
+    entry: DayEntry;
+  } | null>(null);
 
   useEffect(() => {
     setDays(buildRandomCalendar(28));
