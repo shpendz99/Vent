@@ -163,7 +163,7 @@ export default function CarouselFields() {
 
             <div className="h-[420px]">
               <div
-                className="animate-verticalMarquee will-change-transform"
+                className="animate-verticalMarqueeDown will-change-transform"
                 style={{ animationPlayState: paused ? "paused" : "running" }}
               >
                 {items.map((item, idx) => (

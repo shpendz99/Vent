@@ -17,10 +17,12 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("account");
 
   return (
-    <div className="w-full px-10 py-10 min-h-screen text-white bg-[#030712] relative">
+    <div className="w-[min(90%,1300px)] mx-auto pt-24 lg:pt-10 pb-10 min-h-screen text-white relative">
       {/* Optional: Add the same grid background as the Dashboard for consistency */}
 
-      <h1 className="text-3xl font-bold tracking-tight mb-8">Settings</h1>
+      <h1 className="hidden lg:block text-3xl font-bold tracking-tight mb-8">
+        Settings
+      </h1>
 
       {/* --- SLIDING NAV --- */}
       <nav className="flex items-center gap-2 p-1 rounded-lg bg-white/5 border border-white/10 w-fit mb-12">
@@ -29,7 +31,7 @@ export default function SettingsPage() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`
-              relative px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors duration-200 cursor-pointer flex items-center gap-2
+              relative px-3 py-1.5 md:px-4 text-[10px] md:text-xs font-semibold uppercase tracking-wider transition-colors duration-200 cursor-pointer flex items-center gap-1.5 md:gap-2
               ${
                 activeTab === tab.id
                   ? "text-white"
@@ -46,7 +48,7 @@ export default function SettingsPage() {
             )}
             <span className="relative z-10">{tab.label}</span>
             {tab.badge && (
-              <span className="relative z-10 px-1.5 py-0.5 text-[9px] font-bold bg-white/20 rounded text-white/90">
+              <span className="relative z-10 px-1 py-0.5 text-[8px] md:text-[9px] font-bold bg-white/20 rounded text-white/90">
                 {tab.badge}
               </span>
             )}

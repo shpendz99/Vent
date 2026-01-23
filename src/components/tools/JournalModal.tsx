@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useToastStore } from "@/hooks/use-toast-store";
 import { autoCorrectText } from "@/lib/autoCorrect";
@@ -99,7 +100,7 @@ export default function JournalModal({
         journalId
           ? "Journal entry updated successfully!"
           : "Journal entry saved successfully!",
-        "success"
+        "success",
       );
       onPosted?.();
       onClose();
@@ -130,7 +131,7 @@ export default function JournalModal({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.99 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed inset-0 z-70 flex items-start justify-center pt-20 px-4 sm:pt-24 pointer-events-none"
+            className="fixed inset-0 z-70 flex items-center justify-center p-4 pointer-events-none"
           >
             <div
               onClick={(e) => e.stopPropagation()}
@@ -142,9 +143,9 @@ export default function JournalModal({
                 </h2>
                 <button
                   onClick={onClose}
-                  className="shrink-0 rounded-md px-2 py-1 text-[11px] text-white/55 hover:text-white/80 border border-white/10 bg-white/3 transition-colors"
+                  className="group flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/55 hover:text-white hover:bg-white/10 transition-colors"
                 >
-                  Esc
+                  <X size={16} />
                 </button>
               </div>
 
@@ -213,8 +214,8 @@ export default function JournalModal({
                   {submitting
                     ? "Saving..."
                     : journalId
-                    ? "Update Entry"
-                    : "Save Journal"}
+                      ? "Update Entry"
+                      : "Save Journal"}
                 </button>
               </div>
             </div>
@@ -222,6 +223,6 @@ export default function JournalModal({
         </>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 }

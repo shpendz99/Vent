@@ -1,9 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import AnimatedText from "../tools/AnimatedText";
 import YoutubeEmbed from "../tools/YoutubeEmbed";
+import AuthModal from "../auth/AuthModal";
 
 export default function Hero() {
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signup");
+
+  const openAuth = () => {
+    setAuthMode("signup");
+    setAuthOpen(true);
+  };
+
   return (
     <section
       className="relative min-h-screen w-full overflow-visible max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -51,7 +61,10 @@ export default function Hero() {
         </AnimatedText>
 
         <AnimatedText as="div" delay={0.6} className="mt-8">
-          <button className="cursor-pointer relative inline-flex items-center justify-center px-8 py-3 text-sm md:text-base font-semibold uppercase tracking-wider text-white border border-borderc-accent bg-[radial-gradient(circle_at_top,var(--accent-primary),#0284C7)] shadow-[0_0_0_0_rgba(56,189,248,0)] hover:shadow-[0_0_30px_2px_rgba(56,189,248,0.35)] hover:brightness-110 transition-all duration-200 ease-out rounded-md">
+          <button
+            onClick={openAuth}
+            className="cursor-pointer relative inline-flex items-center justify-center px-8 py-3 text-sm md:text-base font-semibold uppercase tracking-wider text-white border border-borderc-accent bg-[radial-gradient(circle_at_top,var(--accent-primary),#0284C7)] shadow-[0_0_0_0_rgba(56,189,248,0)] hover:shadow-[0_0_30px_2px_rgba(56,189,248,0.35)] hover:brightness-110 transition-all duration-200 ease-out rounded-md"
+          >
             Get Started
           </button>
         </AnimatedText>
@@ -71,6 +84,13 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        mode={authMode}
+        onModeChange={setAuthMode}
+      />
     </section>
   );
 }

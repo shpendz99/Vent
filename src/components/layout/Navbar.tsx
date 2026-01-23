@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabaseBrowser } from "@/lib/supabase/client";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { SearchOverlay } from "../tools/SearchOverlay";
 import AuthModal from "../auth/AuthModal"; // ✅ adjust path if needed
@@ -38,7 +40,8 @@ const itemVariants: Variants = {
   },
 };
 
-export const Navbar = () => {
+export const Navbar = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
+  const router = useRouter(); // ✅ Make sure to import this if not already
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // ✅ auth modal state
@@ -50,6 +53,13 @@ export const Navbar = () => {
     setAuthOpen(true);
     setMobileOpen(false); // ✅ close mobile menu when opening modal
   }
+
+  const handleLogout = async () => {
+    const supabase = supabaseBrowser();
+    await supabase.auth.signOut();
+    router.replace("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -68,19 +78,26 @@ export const Navbar = () => {
           <div className="hidden lg:flex items-center space-x-1">
             <SearchOverlay />
 
-            <button
-              onClick={() => openAuth("signin")}
-              className="cursor-pointer inline-flex items-center justify-center px-3 py-2 text-[11px] font-semibold uppercase tracking-wider bg-transparent text-text-secondary border border-transparent hover:text-text-primary hover:border-borderc-accent hover:bg-borderc-accent/10 hover:-translate-y-0.5 hover:brightness-110 transition-all duration-200 ease-out rounded-md"
-            >
-              Log In
-            </button>
+            {!isLoggedIn && (
+              <>
+                <button
+                  onClick={() => openAuth("signin")}
+                  className="cursor-pointer inline-flex items-center justify-center px-3 py-2 text-[11px] font-semibold uppercase tracking-wider bg-transparent text-text-secondary border border-transparent hover:text-text-primary hover:border-borderc-accent hover:bg-borderc-accent/10 hover:-translate-y-0.5 hover:brightness-110 transition-all duration-200 ease-out rounded-md"
+                >
+                  Log In
+                </button>
 
-            <button
-              onClick={() => openAuth("signup")}
-              className="cursor-pointer inline-flex items-center justify-center px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-white border border-border-muted/90 bg-accent-primary/30 rounded-md hover:bg-accent-primary hover:shadow-[0_0_18px_rgba(56,189,248,0.35)] hover:-translate-y-0.5 hover:brightness-110 transition-all duration-200 ease-out"
-            >
-              Sign Up
-            </button>
+                <button
+                  onClick={() => openAuth("signup")}
+                  className="cursor-pointer inline-flex items-center justify-center px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-white border border-border-muted/90 bg-accent-primary/30 rounded-md hover:bg-accent-primary hover:shadow-[0_0_18px_rgba(56,189,248,0.35)] hover:-translate-y-0.5 hover:brightness-110 transition-all duration-200 ease-out"
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
+
+            {/* If logged in on Desktop, we generally rely on Sidebar, but if we wanted links here they'd go here. 
+                For this task, we assume desktop uses Sidebar, so we leave this empty or minimal for logged-in. */}
           </div>
 
           {/* MOBILE NAV (below lg) */}
@@ -88,10 +105,36 @@ export const Navbar = () => {
             {/* Burger / close button */}
             <button
               onClick={() => setMobileOpen((o) => !o)}
-              className="h-8 w-8 flex items-center justify-center rounded-full bg-[#38BDF8]/80 text-background-primary text-lg font-bold shadow-inner shadow-black/40"
+              className="group flex flex-col items-center justify-center gap-[5px] w-8 h-8 rounded-full focus:outline-none"
               aria-label="Toggle menu"
             >
-              {mobileOpen ? "✕" : "≡"}
+              <motion.span
+                variants={{
+                  closed: { rotate: 0, y: 0 },
+                  opened: { rotate: 45, y: 7 },
+                }}
+                animate={mobileOpen ? "opened" : "closed"}
+                transition={{ duration: 0.3 }}
+                className="w-5 h-[2px] bg-slate-200 block origin-center"
+              />
+              <motion.span
+                variants={{
+                  closed: { opacity: 1 },
+                  opened: { opacity: 0 },
+                }}
+                animate={mobileOpen ? "opened" : "closed"}
+                transition={{ duration: 0.2 }}
+                className="w-5 h-[2px] bg-slate-200 block"
+              />
+              <motion.span
+                variants={{
+                  closed: { rotate: 0, y: 0 },
+                  opened: { rotate: -45, y: -7 },
+                }}
+                animate={mobileOpen ? "opened" : "closed"}
+                transition={{ duration: 0.3 }}
+                className="w-5 h-[2px] bg-slate-200 block origin-center"
+              />
             </button>
           </div>
         </div>
@@ -113,26 +156,63 @@ export const Navbar = () => {
                 <SearchOverlay />
               </motion.div>
 
-              {/* Log in */}
-              <motion.button
-                variants={itemVariants}
-                onClick={() => openAuth("signin")}
-                className=" cursor-pointer mb-2 flex w-full items-center uppercase justify-center rounded-none tracking-wide px-3 py-2 text-sm font-medium text-text-secondary hover:bg-background-tertiary/60 transition-colors"
-              >
-                Log In
-              </motion.button>
+              {!isLoggedIn ? (
+                <>
+                  {/* Log in */}
+                  <motion.button
+                    variants={itemVariants}
+                    onClick={() => openAuth("signin")}
+                    className=" cursor-pointer mb-2 flex w-full items-center uppercase justify-center rounded-none tracking-wide px-3 py-2 text-sm font-medium text-text-secondary hover:bg-background-tertiary/60 transition-colors"
+                  >
+                    Log In
+                  </motion.button>
 
-              {/* Divider */}
-              <div className="my-1 h-px w-full bg-border-muted/70" />
+                  {/* Divider */}
+                  <div className="my-1 h-px w-full bg-border-muted/70" />
 
-              {/* Sign up */}
-              <motion.button
-                variants={itemVariants}
-                onClick={() => openAuth("signup")}
-                className=" cursor-pointer font-semibold mt-1 flex w-full items-center justify-center rounded-md px-3 py-2 text-sm uppercase tracking-wide  hover:bg-background-tertiary/70 transition-colors"
-              >
-                Sign Up
-              </motion.button>
+                  {/* Sign up */}
+                  <motion.button
+                    variants={itemVariants}
+                    onClick={() => openAuth("signup")}
+                    className=" cursor-pointer font-semibold mt-1 flex w-full items-center justify-center rounded-md px-3 py-2 text-sm uppercase tracking-wide  hover:bg-background-tertiary/70 transition-colors"
+                  >
+                    Sign Up
+                  </motion.button>
+                </>
+              ) : (
+                <>
+                  {/* LOGGED IN LINKS */}
+                  <div className="space-y-1">
+                    {[
+                      { label: "Dashboard", href: "/dashboard" },
+                      { label: "Feed", href: "/feed" },
+                      { label: "Settings", href: "/settings" },
+                    ].map((link, idx) => (
+                      <motion.button
+                        key={link.label}
+                        variants={itemVariants}
+                        onClick={() => {
+                          setMobileOpen(false);
+                          router.push(link.href);
+                        }}
+                        className="cursor-pointer flex w-full items-center rounded-xl px-4 py-3 text-sm font-medium text-text-secondary hover:bg-white/5 hover:text-white transition-colors"
+                      >
+                        {link.label}
+                      </motion.button>
+                    ))}
+
+                    <div className="my-2 h-px w-full bg-border-muted/50" />
+
+                    <motion.button
+                      variants={itemVariants}
+                      onClick={handleLogout}
+                      className="cursor-pointer flex w-full items-center rounded-xl px-4 py-3 text-sm font-medium text-red-400/80 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+                    >
+                      Sign Out
+                    </motion.button>
+                  </div>
+                </>
+              )}
             </div>
           </motion.div>
         )}

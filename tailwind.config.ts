@@ -36,12 +36,17 @@ const config: Config = {
         },
       },
       animation: {
-        verticalMarquee: "verticalMarquee 26s linear infinite",
+        verticalMarquee: "verticalMarquee 20s linear infinite",
+        verticalMarqueeDown: "verticalMarqueeDown 20s linear infinite",
       },
       keyframes: {
         verticalMarquee: {
           "0%": { transform: "translateY(0)" },
           "100%": { transform: "translateY(-50%)" },
+        },
+        verticalMarqueeDown: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
         },
       },
     },

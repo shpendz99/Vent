@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import NavbarApp from "@/components/layout/NavbarApp";
+import { Navbar } from "@/components/layout/Navbar";
 import { CustomToaster } from "@/components/tools/CustomToaster";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -36,9 +37,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-[#030712]">
-      {/* Sidebar is self-contained. If it's fixed, this wrapper won't help much unless we reserve space.
-          If I change Sidebar to be relative/sticky, this works perfectly. */}
+      {/* 
+        DESKTOP SIDEBAR 
+        NavbarApp (aka Sidebar) is hidden on mobile (lg:hidden) inside the component itself or via wrapper 
+        (It currently has 'hidden lg:flex' class).
+      */}
       <NavbarApp />
+
+      {/* 
+        MOBILE NAVBAR
+        We only show this on screens < lg. 
+      */}
+      <div className="block lg:hidden">
+        <Navbar isLoggedIn={true} />
+      </div>
 
       <main className="flex-1 relative">{children}</main>
 

@@ -26,7 +26,7 @@ export default function DashboardPage() {
 
       <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-transparent via-[#030712]/50 to-[#030712]" />
 
-      <div className="relative z-10 pt-10 pb-20 px-4 max-w-7xl mx-auto space-y-6">
+      <div className="relative z-10 pt-24 lg:pt-10 pb-20 w-[min(90%,1300px)] mx-auto space-y-6">
         {/* HEADER */}
         <section className="animate-in fade-in slide-in-from-top-4 duration-700">
           <DashboardHeader />

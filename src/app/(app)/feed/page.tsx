@@ -34,7 +34,7 @@ export default function FeedPage() {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedThoughts, setExpandedThoughts] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [showSidebar, setShowSidebar] = useState(true);
   const isPro = false;
@@ -69,7 +69,7 @@ export default function FeedPage() {
 
         // 2. Fetch Profiles for those thoughts
         const userIds = Array.from(
-          new Set((thoughtsData || []).map((t) => t.user_id).filter(Boolean))
+          new Set((thoughtsData || []).map((t) => t.user_id).filter(Boolean)),
         );
 
         let profilesMap: Record<string, { username: string }> = {};
@@ -202,7 +202,7 @@ export default function FeedPage() {
         }}
       />
 
-      <div className="relative z-10 pt-10 pb-20 px-6 ml-20 lg:ml-32">
+      <div className="relative z-10 pt-24 lg:pt-10 pb-20 w-[min(90%,1300px)] mx-auto">
         {/* TOP FILTERS */}
         <div className="flex flex-wrap gap-3 mb-12">
           {FILTERS.map((filter) => {
