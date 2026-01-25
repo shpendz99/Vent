@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { SearchOverlay } from "../tools/SearchOverlay";
-import AuthModal from "../auth/AuthModal"; // ✅ adjust path if needed
+import AuthModal from "../auth/AuthModal";
+import PostThoughtModal from "@/components/tools/PostThoughtModal";
 
 const mobileMenuVariants: Variants = {
   hidden: { opacity: 0, y: -8 },
@@ -40,18 +41,22 @@ const itemVariants: Variants = {
   },
 };
 
+// ... inside Navbar component
 export const Navbar = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
-  const router = useRouter(); // ✅ Make sure to import this if not already
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // ✅ auth modal state
+  // Auth modal state
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signup");
+
+  // Post Thought modal state
+  const [postThoughtOpen, setPostThoughtOpen] = useState(false);
 
   function openAuth(mode: "signin" | "signup") {
     setAuthMode(mode);
     setAuthOpen(true);
-    setMobileOpen(false); // ✅ close mobile menu when opening modal
+    setMobileOpen(false);
   }
 
   const handleLogout = async () => {
@@ -63,7 +68,6 @@ export const Navbar = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
 
   return (
     <>
-      {/* NAVBAR PILL */}
       <header className="fixed top-4 left-1/2 z-50 w-[min(90%,1300px)] -translate-x-1/2 rounded-md border border-border-muted/90 bg-[#111016]/20 backdrop-blur-xs shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
         <div className="flex items-center justify-between px-4 py-2 md:px-6 md:py-3">
           {/* Brand */}
@@ -183,6 +187,18 @@ export const Navbar = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
                 <>
                   {/* LOGGED IN LINKS */}
                   <div className="space-y-1">
+                    {/* Post Thought Button */}
+                    <motion.button
+                      variants={itemVariants}
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setPostThoughtOpen(true);
+                      }}
+                      className="cursor-pointer flex w-full items-center uppercase tracking-wide justify-center rounded-xl px-4 py-3 text-sm font-bold text-sky-400 bg-sky-500/10 mb-2 hover:bg-sky-500/20 transition-colors"
+                    >
+                      Post Thought
+                    </motion.button>
+
                     {[
                       { label: "Dashboard", href: "/dashboard" },
                       { label: "Feed", href: "/feed" },
@@ -218,12 +234,19 @@ export const Navbar = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
         )}
       </AnimatePresence>
 
-      {/* ✅ AUTH MODAL */}
+      {/* AUTH MODAL */}
       <AuthModal
         open={authOpen}
         onClose={() => setAuthOpen(false)}
         mode={authMode}
         onModeChange={setAuthMode}
+      />
+
+      {/* POST THOUGHT MODAL */}
+      <PostThoughtModal
+        open={postThoughtOpen}
+        onClose={() => setPostThoughtOpen(false)}
+        onPosted={() => router.refresh()}
       />
     </>
   );

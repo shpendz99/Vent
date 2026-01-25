@@ -35,20 +35,31 @@ export default function SignInForm({
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    console.log("Submit clicked. Attempting login...");
     setError(null);
     setLoading(true);
 
     const supabase = supabaseBrowser();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    setLoading(false);
-    if (error) return setError(error.message);
+    if (error) {
+      console.error("Login Error:", error);
+      setLoading(false);
+      return setError(error.message);
+    }
 
+    console.log("LOGGED IN SUCCESSFULLY:", data.user);
+
+    // Prevent loader from showing again if it hasn't finished yet
+    sessionStorage.setItem("hasSeenLoader", "true");
+
+    // On success, close the modal/form
     onDone();
-    router.replace("/dashboard");
+    router.refresh();
+    router.push("/dashboard");
   }
 
   return (
@@ -85,7 +96,7 @@ export default function SignInForm({
             type="button"
             onClick={() => {
               if (onForgotPassword) return onForgotPassword();
-              router.push("/forgot-password"); // ✅ FIXED fallback
+              router.push("/forgot-password");
             }}
             className="text-xs text-white/45 hover:text-white/70 transition-colors cursor-pointer"
           >

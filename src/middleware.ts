@@ -2,12 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // 1. Initialize Response
+  // Initialize the response as the default 'next' response
   let supabaseResponse = NextResponse.next({
     request,
   });
 
-  // 2. Setup Supabase Client
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -17,13 +16,11 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
+          // Update the request cookies
           cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set({
-              name,
-              value,
-              ...options,
-            })
+            request.cookies.set({ name, value, ...options })
           );
+          // Update the response cookies to ensure the browser receives them
           supabaseResponse = NextResponse.next({
             request,
           });
@@ -35,22 +32,31 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // 3. IMPORTANT: Use getUser() not getSession() for security
+  // IMPORTANT: getUser() is more secure than getSession() for middleware
+  // IMPORTANT: This refreshes the session if it's expired - Auth-First structure
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 4. Redirect Logic
-  const url = request.nextUrl.clone();
+  console.log("MIDDLEWARE DEBUG:", {
+    path: request.nextUrl.pathname,
+    hasUser: !!user,
+    userId: user?.id,
+    cookies: request.cookies.getAll().map((c) => c.name),
+  });
 
-  // If logged in and on Landing Page -> go to Dashboard
-  if (user && url.pathname === "/") {
+  const url = request.nextUrl.clone();
+  const isDashboard = url.pathname.startsWith("/dashboard");
+  const isHomePage = url.pathname === "/";
+
+  // LOGGED IN: If user is on the Landing Page, force them to the Dashboard
+  if (user && isHomePage) {
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 
-  // If NOT logged in and trying to access Dashboard -> go Home
-  if (!user && url.pathname.startsWith("/dashboard")) {
+  // NOT LOGGED IN: If user tries to access /dashboard, force them back Home
+  if (!user && isDashboard) {
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
@@ -60,13 +66,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

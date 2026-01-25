@@ -12,12 +12,19 @@ export default function ClientLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Artificial delay to let assets load (3 seconds)
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    // Check if the user has already seen the splash screen in this session
+    const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
 
-    return () => clearTimeout(timer);
+    if (hasSeenLoader) {
+      setIsLoading(false);
+    } else {
+      // Artificial delay to let assets load (3 seconds)
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        sessionStorage.setItem("hasSeenLoader", "true");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (

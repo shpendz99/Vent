@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
-import { useToastStore } from "@/hooks/use-toast-store"; // Import your new store
+import { useToastStore } from "@/hooks/use-toast-store";
 import { autoCorrectText } from "@/lib/autoCorrect";
 
 interface PostThoughtModalProps {
@@ -59,7 +60,7 @@ export default function PostThoughtModal({
 
   const toggleRoom = (key: string) => {
     setSelectedRooms((prev) =>
-      prev.includes(key) ? prev.filter((r) => r !== key) : [...prev, key]
+      prev.includes(key) ? prev.filter((r) => r !== key) : [...prev, key],
     );
   };
 
@@ -85,7 +86,7 @@ export default function PostThoughtModal({
         user_id: user.id,
         content: content.trim(),
         visibility: visibility,
-        rooms: selectedRooms, // Correct column name from your DB fix
+        rooms: selectedRooms,
       });
 
       if (insertErr) throw insertErr;
@@ -135,9 +136,9 @@ export default function PostThoughtModal({
                 </h2>
                 <button
                   onClick={onClose}
-                  className="shrink-0 rounded-md px-2 py-1 text-[11px] text-white/55 hover:text-white/80 border border-white/10 bg-white/[0.03] transition-colors"
+                  className="shrink-0 flex items-center justify-center rounded-md w-8 h-8 text-white/55 hover:text-white/80 border border-white/10 bg-white/[0.03] transition-colors"
                 >
-                  Esc
+                  <X size={16} />
                 </button>
               </div>
 
@@ -228,6 +229,6 @@ export default function PostThoughtModal({
         </>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 }

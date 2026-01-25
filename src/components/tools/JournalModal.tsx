@@ -143,7 +143,7 @@ export default function JournalModal({
                 </h2>
                 <button
                   onClick={onClose}
-                  className="group flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/55 hover:text-white hover:bg-white/10 transition-colors"
+                  className="shrink-0 flex items-center justify-center rounded-md w-8 h-8 text-white/55 hover:text-white/80 border border-white/10 bg-white/[0.03] transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -164,7 +164,7 @@ export default function JournalModal({
                   {/* BAD MOOD */}
                   <button
                     onClick={() => setMood("Bad")}
-                    className={`text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-1.5 ${
+                    className={`text-[10px] font-bold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-1.5 ${
                       mood === "Bad"
                         ? "text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]"
                         : "text-white/20 hover:text-white/40"
@@ -176,7 +176,7 @@ export default function JournalModal({
                   {/* AVERAGE MOOD */}
                   <button
                     onClick={() => setMood("Average")}
-                    className={`text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-1.5 ${
+                    className={`text-[10px] font-bold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-1.5 ${
                       mood === "Average"
                         ? "text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
                         : "text-white/20 hover:text-white/40"
@@ -188,7 +188,7 @@ export default function JournalModal({
                   {/* GOOD MOOD */}
                   <button
                     onClick={() => setMood("Good")}
-                    className={`text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-1.5 ${
+                    className={`text-[10px] font-bold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-1.5 ${
                       mood === "Good"
                         ? "text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]"
                         : "text-white/20 hover:text-white/40"
@@ -202,7 +202,7 @@ export default function JournalModal({
                   disabled={!canSubmit}
                   onClick={submit}
                   className={`
-                    px-6 py-2.5 rounded-md text-[11px] font-bold uppercase tracking-wider
+                    px-6 py-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider
                     transition-all duration-200 ease-out
                     ${
                       canSubmit
