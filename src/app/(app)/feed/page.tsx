@@ -69,7 +69,9 @@ export default function FeedPage() {
 
         // 2. Fetch Profiles for those thoughts
         const userIds = Array.from(
-          new Set((thoughtsData || []).map((t) => t.user_id).filter(Boolean)),
+          new Set(
+            (thoughtsData || []).map((t: any) => t.user_id).filter(Boolean),
+          ),
         );
 
         let profilesMap: Record<string, { username: string }> = {};
@@ -83,14 +85,14 @@ export default function FeedPage() {
           if (profilesError) {
             console.error("Error fetching profiles:", profilesError);
           } else {
-            profilesData?.forEach((p) => {
+            profilesData?.forEach((p: any) => {
               profilesMap[p.id] = { username: p.username };
             });
           }
         }
 
         // 3. Merge
-        const combined = (thoughtsData || []).map((t) => ({
+        const combined = (thoughtsData || []).map((t: any) => ({
           ...t,
           profiles: profilesMap[t.user_id] || null,
         }));
