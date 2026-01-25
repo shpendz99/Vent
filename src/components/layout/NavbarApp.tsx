@@ -106,7 +106,7 @@ export default function Sidebar() {
               label="Dashboard"
               active={pathname === "/dashboard"}
               expanded={isExpanded}
-              onClick={() => router.push("/dashboard")}
+              href="/dashboard"
             />
             <SidebarAction
               custom={1}
@@ -114,7 +114,7 @@ export default function Sidebar() {
               label="Feed"
               active={pathname === "/feed"}
               expanded={isExpanded}
-              onClick={() => router.push("/feed")}
+              href="/feed"
             />
           </nav>
 
@@ -162,7 +162,7 @@ export default function Sidebar() {
               icon={<Settings size={18} />}
               label="Settings"
               expanded={isExpanded}
-              onClick={() => router.push("/settings")}
+              href="/settings"
             />
 
             <SidebarAction
@@ -253,6 +253,10 @@ export default function Sidebar() {
   );
 }
 
+import Link from "next/link";
+
+// ... existing code ...
+
 function SidebarAction({
   icon,
   label,
@@ -260,18 +264,11 @@ function SidebarAction({
   expanded,
   active,
   custom,
+  href,
   className = "",
 }: any) {
-  return (
-    <motion.button
-      layout
-      onClick={onClick}
-      className={`flex items-center w-full h-12 rounded-xl cursor-pointer overflow-hidden relative ${
-        active
-          ? "bg-white/10 text-white"
-          : "text-white/40 hover:bg-white/5 hover:text-white"
-      } ${className}`}
-    >
+  const content = (
+    <>
       <motion.div
         layout="position"
         className="w-12 h-12 flex items-center justify-center shrink-0"
@@ -292,6 +289,34 @@ function SidebarAction({
           </motion.span>
         )}
       </AnimatePresence>
+    </>
+  );
+
+  const containerClass = `flex items-center w-full h-12 rounded-xl cursor-pointer overflow-hidden relative ${
+    active
+      ? "bg-white/10 text-white"
+      : "text-white/40 hover:bg-white/5 hover:text-white"
+  } ${className}`;
+
+  if (href) {
+    return (
+      <Link href={href} className={containerClass}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <motion.button
+      layout
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        onClick?.();
+      }}
+      className={containerClass}
+    >
+      {content}
     </motion.button>
   );
 }
