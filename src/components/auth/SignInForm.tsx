@@ -56,10 +56,14 @@ export default function SignInForm({
     // Prevent loader from showing again if it hasn't finished yet
     sessionStorage.setItem("hasSeenLoader", "true");
 
-    // On success, close the modal/form
-    onDone();
+    // 1. Refresh the router to update the server's view of the cookies
     router.refresh();
-    router.push("/dashboard");
+
+    // 2. Give the browser 800ms to settle the cookies on the Vercel production domain
+    setTimeout(() => {
+      onDone();
+      window.location.href = "/dashboard";
+    }, 800);
   }
 
   return (

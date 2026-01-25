@@ -16,16 +16,26 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          // Update the request cookies
           cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set({ name, value, ...options })
+            request.cookies.set({
+              name,
+              value,
+              ...options,
+            })
           );
-          // Update the response cookies to ensure the browser receives them
+
+          // Re-create the response to include the new cookies
           supabaseResponse = NextResponse.next({
             request,
           });
+
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set({
+              name,
+              value,
+              ...options,
+              path: "/",
+            })
           );
         },
       },
