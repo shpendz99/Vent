@@ -93,7 +93,7 @@ export default function CalendarProfileGrid() {
         0,
         23,
         59,
-        59
+        59,
       ).toISOString();
 
       const { data, error } = await supabase
@@ -104,7 +104,7 @@ export default function CalendarProfileGrid() {
 
       if (data && !error) {
         const mappedEntries: Record<number, JournalEntry> = {};
-        data.forEach((item) => {
+        data.forEach((item: any) => {
           const day = new Date(item.created_at).getDate();
           mappedEntries[day] = {
             id: item.id,
@@ -267,7 +267,7 @@ export default function CalendarProfileGrid() {
                   setEditingEntry(existingEntry);
                   addToast(
                     "Opening your existing entry for today...",
-                    "success"
+                    "success",
                   );
                 }
 
@@ -424,7 +424,7 @@ export default function CalendarProfileGrid() {
               </>
             )}
           </AnimatePresence>,
-          document.body
+          document.body,
         )}
     </div>
   );

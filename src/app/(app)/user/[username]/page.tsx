@@ -15,7 +15,7 @@ export default function PublicProfilePage() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [expandedThoughts, setExpandedThoughts] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
 
   // Helper functions from Feed
@@ -82,7 +82,7 @@ export default function PublicProfilePage() {
         console.error("Error fetching thoughts:", thoughtsError);
       } else {
         // Map thoughts to include profile info (for consistency with Feed card structure)
-        const mappedThoughts = thoughtsData.map((t) => ({
+        const mappedThoughts = thoughtsData.map((t: any) => ({
           ...t,
           profiles: { username: profileData.username },
         }));

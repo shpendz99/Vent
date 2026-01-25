@@ -31,7 +31,8 @@ function parseRecoveryParams() {
     error: hashParams.get("error") || searchParams.get("error"),
     error_code: hashParams.get("error_code") || searchParams.get("error_code"),
     error_description:
-      hashParams.get("error_description") || searchParams.get("error_description"),
+      hashParams.get("error_description") ||
+      searchParams.get("error_description"),
   };
 }
 
@@ -51,7 +52,7 @@ export default function ResetPasswordPage() {
   useEffect(() => {
     let cancelled = false;
 
-    const { data } = supabase.auth.onAuthStateChange((event) => {
+    const { data } = supabase.auth.onAuthStateChange((event: any) => {
       if (cancelled) return;
       if (event === "PASSWORD_RECOVERY") {
         setError(null);
@@ -67,7 +68,7 @@ export default function ResetPasswordPage() {
         setError(
           params.error_description
             ? decodeURIComponent(params.error_description.replace(/\+/g, " "))
-            : "This reset link is invalid or expired. Please request a new one."
+            : "This reset link is invalid or expired. Please request a new one.",
         );
         return;
       }
@@ -83,7 +84,9 @@ export default function ResetPasswordPage() {
 
       // 2) PKCE flow: exchange code for session
       if (params.code) {
-        const { error } = await supabase.auth.exchangeCodeForSession(params.code);
+        const { error } = await supabase.auth.exchangeCodeForSession(
+          params.code,
+        );
         if (cancelled) return;
 
         if (!error) {
@@ -109,7 +112,9 @@ export default function ResetPasswordPage() {
 
       // Nothing worked
       setStatus("invalid");
-      setError("This reset link is invalid or expired. Please request a new one.");
+      setError(
+        "This reset link is invalid or expired. Please request a new one.",
+      );
     })();
 
     return () => {
@@ -218,7 +223,9 @@ export default function ResetPasswordPage() {
 
               <button
                 type="submit"
-                disabled={!pw || !pw2 || status === "saving" || !pwOk || !matchOk}
+                disabled={
+                  !pw || !pw2 || status === "saving" || !pwOk || !matchOk
+                }
                 className={primaryBtnClass}
               >
                 {status === "saving" ? "Saving…" : "Update password"}
