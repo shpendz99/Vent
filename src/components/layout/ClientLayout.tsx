@@ -6,12 +6,16 @@ import LoadingScreen from "@/components/layout/LoadingScreen";
 
 export default function ClientLayout({
   children,
+  hasAuthCookie = false,
 }: {
   children: React.ReactNode;
+  hasAuthCookie?: boolean;
 }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(hasAuthCookie);
 
   useEffect(() => {
+    if (!isLoading) return;
+
     // Check if the user has already seen the splash screen in this session
     const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
 
@@ -25,7 +29,7 @@ export default function ClientLayout({
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isLoading]);
 
   return (
     <AnimatePresence mode="wait">

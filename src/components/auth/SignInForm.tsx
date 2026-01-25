@@ -59,11 +59,11 @@ export default function SignInForm({
     // 1. Refresh the router to update the server's view of the cookies
     router.refresh();
 
-    // 2. Give the browser 800ms to settle the cookies on the Vercel production domain
+    // 2. Give the browser a moment to settle cookies, then soft navigate
     setTimeout(() => {
       onDone();
-      window.location.href = "/dashboard";
-    }, 800);
+      router.push("/dashboard");
+    }, 500);
   }
 
   return (

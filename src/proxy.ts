@@ -42,11 +42,13 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // IMPORTANT: getUser() is more secure than getSession() for middleware
-  // IMPORTANT: This refreshes the session if it's expired - Auth-First structure
+  // IMPORTANT: getSession() is faster for middleware navigation checks.
+  // It verifies the token locally/via cookie without a remote call to Supabase Auth.
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const user = session?.user;
 
   console.log("PROXY DEBUG:", {
     path: request.nextUrl.pathname,
