@@ -48,7 +48,7 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("MIDDLEWARE DEBUG:", {
+  console.log("PROXY DEBUG:", {
     path: request.nextUrl.pathname,
     hasUser: !!user,
     userId: user?.id,
