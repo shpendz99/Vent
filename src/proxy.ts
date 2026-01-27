@@ -42,13 +42,10 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // IMPORTANT: getSession() is faster for middleware navigation checks.
-  // It verifies the token locally/via cookie without a remote call to Supabase Auth.
+  // IMPORTANT: getUser() is safer as it validates the token on the server.
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const user = session?.user;
+    data: { user },
+  } = await supabase.auth.getUser();
 
   console.log("PROXY DEBUG:", {
     path: request.nextUrl.pathname,

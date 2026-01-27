@@ -220,7 +220,7 @@ export default function FeedPage() {
                 className={`
                  inline-flex items-center gap-1
                  rounded-md                      
-                 border border-slate-700/70      
+                 border      
                  px-3.5 py-1.5                 
                  uppercase tracking-[0.14em]
                  text-[10px] md:text-[11px]
@@ -230,7 +230,7 @@ export default function FeedPage() {
                  ${
                    active
                      ? "border-sky-400/80 bg-slate-900/80 text-sky-100 shadow-[0_0_12px_rgba(56,189,248,0.45)]"
-                     : "bg-slate-900/40 text-slate-400 hover:border-slate-500 hover:text-slate-100"
+                     : "border-slate-700/70 bg-slate-900/40 text-slate-400 hover:border-slate-500 hover:text-slate-100"
                  }
                `}
               >

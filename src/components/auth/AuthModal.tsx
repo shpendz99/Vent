@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import SignInForm from "./SignInForm";
 import SignUpWizard from "./SignUpWizard";
 
@@ -13,7 +14,12 @@ type Props = {
   onModeChange: (mode: "signin" | "signup") => void;
 };
 
-export default function AuthModal({ open, onClose, mode, onModeChange }: Props) {
+export default function AuthModal({
+  open,
+  onClose,
+  mode,
+  onModeChange,
+}: Props) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -79,18 +85,15 @@ export default function AuthModal({ open, onClose, mode, onModeChange }: Props) 
             >
               {/* Header — match SearchOverlay */}
               <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                <div className="text-[15px] font-medium text-white/85">{title}</div>
+                <div className="text-[15px] font-medium text-white/85">
+                  {title}
+                </div>
 
                 <button
                   onClick={onClose}
-                  className={[
-                    "shrink-0 rounded-md px-2 py-1 text-[11px]",
-                    "text-white/55 hover:text-white/80",
-                    "border border-white/10 bg-white/[0.03] hover:bg-white/[0.06]",
-                    "transition-colors",
-                  ].join(" ")}
+                  className="shrink-0 flex items-center justify-center rounded-md w-8 h-8 text-white/55 hover:text-white/80 border border-white/10 bg-white/[0.03] transition-colors"
                 >
-                  Esc
+                  <X size={16} />
                 </button>
               </div>
 

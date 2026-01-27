@@ -2,13 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Copy, Check, Pencil, Save, X } from "lucide-react";
+import { Copy, Check, Pencil, Save, X, Eye, EyeOff } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useToastStore } from "@/hooks/use-toast-store";
 
 export default function AccountSection() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -29,6 +30,7 @@ export default function AccountSection() {
   );
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const addToast = useToastStore((state) => state.addToast);
 
@@ -62,11 +64,59 @@ export default function AccountSection() {
 
   // ... (keeping validation effects same) ...
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (event.target.files && event.target.files[0]) {
-      // Just log for now as requested
-      console.log("File selected:", event.target.files[0]);
-      // Ideally we would trigger upload here
+      const file = event.target.files[0];
+      const maxSize = 2 * 1024 * 1024; // 2MB
+
+      if (file.size > maxSize) {
+        addToast("Image must be smaller than 2MB", "error");
+        return;
+      }
+
+      try {
+        setUploading(true);
+        const supabase = supabaseBrowser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) throw new Error("No user found");
+
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+
+        // 1. Upload to Storage
+        const { error: uploadError } = await supabase.storage
+          .from("avatars")
+          .upload(fileName, file, { cacheControl: "3600", upsert: true });
+
+        if (uploadError) throw uploadError;
+
+        // 2. Get Public URL
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("avatars").getPublicUrl(fileName);
+
+        // 3. Update Profile Logic
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ avatar_url: publicUrl })
+          .eq("id", user.id);
+
+        if (updateError) throw updateError;
+
+        // 4. Update Local State
+        setAvatarUrl(publicUrl);
+        addToast("Avatar updated successfully", "success");
+      } catch (error: any) {
+        console.error("Error uploading avatar:", error);
+        addToast(error.message || "Error uploading avatar", "error");
+      } finally {
+        setUploading(false);
+      }
     }
   };
 
@@ -246,6 +296,11 @@ export default function AccountSection() {
         />
         <div className="relative group">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center overflow-hidden shadow-2xl">
+            {uploading ? (
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+              </div>
+            ) : null}
             {avatarUrl ? (
               <img
                 src={avatarUrl}
@@ -371,20 +426,31 @@ export default function AccountSection() {
               </div>
             )}
           </div>
-          <input
-            type="password"
-            disabled={!editing}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={`w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm transition-all focus:outline-none
-              ${
-                !editing
-                  ? "text-white/20 cursor-not-allowed"
-                  : passwordError
-                    ? "text-white border-red-500/40 focus:border-red-500/60"
-                    : "text-white focus:border-white/10"
-              }`}
-          />
+          <div className="relative">
+            <input
+              type={editing && showPassword ? "text" : "password"}
+              disabled={!editing}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm transition-all focus:outline-none pr-12
+                ${
+                  !editing
+                    ? "text-white/20 cursor-not-allowed"
+                    : passwordError
+                      ? "text-white border-red-500/40 focus:border-red-500/60"
+                      : "text-white focus:border-white/10"
+                }`}
+            />
+            {editing && (
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/45 hover:text-white/70 transition-colors cursor-pointer"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

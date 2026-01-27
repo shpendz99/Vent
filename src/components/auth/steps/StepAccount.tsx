@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 type Props = {
   email: string;
@@ -35,6 +36,8 @@ export default function StepAccount({
   onSwitchToSignIn,
 }: Props) {
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const emailOk = validEmail(email);
@@ -75,37 +78,57 @@ export default function StepAccount({
         required
       />
 
-      <input
-        className={inputClass}
-        placeholder="Password"
-        type="password"
-        autoComplete="new-password"
-        value={password}
-        onChange={(e) => {
-          setError(null);
-          setPassword(e.target.value);
-        }}
-        required
-      />
+      <div className="relative">
+        <input
+          className={inputClass}
+          placeholder="Password"
+          type={showPassword ? "text" : "password"}
+          autoComplete="new-password"
+          value={password}
+          onChange={(e) => {
+            setError(null);
+            setPassword(e.target.value);
+          }}
+          required
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/45 hover:text-white/70 transition-colors cursor-pointer"
+        >
+          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
 
-      <input
-        className={inputClass}
-        placeholder="Confirm password"
-        type="password"
-        autoComplete="new-password"
-        value={confirmPassword}
-        onChange={(e) => {
-          setError(null);
-          setConfirmPassword(e.target.value);
-        }}
-        required
-      />
+      <div className="relative">
+        <input
+          className={inputClass}
+          placeholder="Confirm password"
+          type={showConfirmPassword ? "text" : "password"}
+          autoComplete="new-password"
+          value={confirmPassword}
+          onChange={(e) => {
+            setError(null);
+            setConfirmPassword(e.target.value);
+          }}
+          required
+        />
+        <button
+          type="button"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/45 hover:text-white/70 transition-colors cursor-pointer"
+        >
+          {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
 
       {/* Small helper row (optional but makes it feel “thoughtful”) */}
       <div className="flex items-center justify-between text-xs">
         <span className="text-white/35">Minimum 6 characters</span>
         {confirmPassword.length > 0 ? (
-          <span className={confirmOk ? "text-emerald-300/80" : "text-red-300/80"}>
+          <span
+            className={confirmOk ? "text-emerald-300/80" : "text-red-300/80"}
+          >
             {confirmOk ? "Passwords match" : "Passwords don’t match"}
           </span>
         ) : (

@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState, useRef } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
-import { CheckCircle2, X } from "lucide-react"; // Assuming you use lucide-react for icons
+import { CheckCircle2, X } from "lucide-react";
+import { useToastStore } from "@/hooks/use-toast-store";
 
 type Props = {
   email: string;
@@ -33,10 +34,13 @@ export default function StepVerify({
   onPrev,
   onDone,
 }: Props) {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
   const [error, setError] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
-  
+  const addToast = useToastStore((state) => state.addToast);
+
   const hasSentInitial = useRef(false);
 
   const redirectTo = useMemo(() => {
@@ -62,15 +66,31 @@ export default function StepVerify({
       password,
       options: {
         emailRedirectTo: redirectTo,
-        data: { 
+        data: {
           username: username.toLowerCase().trim(),
           display_name: displayName.trim(),
-          intent: intent.trim() 
+          intent: intent.trim(),
         },
       },
     });
 
     if (signUpError) {
+      console.error("Signup Error:", signUpError);
+
+      // CHECK FOR EXISTING USER
+      if (
+        signUpError.message.includes("User already registered") ||
+        signUpError.message.toLowerCase().includes("already registered") ||
+        signUpError.message.toLowerCase().includes("already associated")
+      ) {
+        addToast(
+          "This email is already associated with an account. Please sign in instead.",
+          "error",
+        );
+        setStatus("idle"); // Reset so they can change email or go back
+        return;
+      }
+
       setError(signUpError.message);
       setStatus("error");
       return;
@@ -99,15 +119,25 @@ export default function StepVerify({
               <CheckCircle2 size={18} />
             </div>
             <div className="flex-1">
-              <div className="text-[13px] font-medium text-white/90">Verification resent</div>
-              <div className="text-[11px] text-white/40">Check your inbox again.</div>
+              <div className="text-[13px] font-medium text-white/90">
+                Verification resent
+              </div>
+              <div className="text-[11px] text-white/40">
+                Check your inbox again.
+              </div>
             </div>
-            <button onClick={() => setShowToast(false)} className="text-white/20 hover:text-white/50">
+            <button
+              onClick={() => setShowToast(false)}
+              className="text-white/20 hover:text-white/50"
+            >
               <X size={16} />
             </button>
             {/* Progress bar timer */}
             <div className="absolute bottom-0 left-4 right-4 h-[2px] bg-white/5 overflow-hidden rounded-full">
-              <div className="h-full bg-emerald-500 animate-shrink-width" style={{ animationDuration: '5s' }} />
+              <div
+                className="h-full bg-emerald-500 animate-shrink-width"
+                style={{ animationDuration: "5s" }}
+              />
             </div>
           </div>
         </div>
@@ -118,7 +148,8 @@ export default function StepVerify({
           Step 3 — Confirm your email
         </div>
         <div className="mt-1 text-xs text-white/45">
-          We sent a link to <span className="text-white/80 font-medium">{email}</span>.
+          We sent a link to{" "}
+          <span className="text-white/80 font-medium">{email}</span>.
         </div>
       </div>
 
@@ -151,7 +182,10 @@ export default function StepVerify({
       </div>
 
       <div className="text-center">
-        <button onClick={onDone} className="text-[11px] text-white/30 hover:text-white/50">
+        <button
+          onClick={onDone}
+          className="text-[11px] text-white/30 hover:text-white/50"
+        >
           I'll confirm it later
         </button>
       </div>

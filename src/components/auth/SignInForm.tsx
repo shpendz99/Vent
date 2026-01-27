@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 
 type Props = {
@@ -30,6 +31,7 @@ export default function SignInForm({
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,18 +84,27 @@ export default function SignInForm({
           required
         />
 
-        <input
-          className={inputClass}
-          placeholder="Password"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => {
-            setError(null);
-            setPassword(e.target.value);
-          }}
-          required
-        />
+        <div className="relative">
+          <input
+            className={inputClass}
+            placeholder="Password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => {
+              setError(null);
+              setPassword(e.target.value);
+            }}
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/45 hover:text-white/70 transition-colors cursor-pointer"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
 
         <div className="flex justify-end">
           <button
